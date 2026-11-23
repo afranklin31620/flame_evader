@@ -182,7 +182,8 @@ function fireBall() {
         frame: 0,
         chuncksize: 32,
         spritesheet: new Image(),
-        audio: new Audio("./audio/fire.mp3#t=15.6,16.2"),
+        //audio: new Audio("./audio/fire.mp3#t=15.6,16.2"),
+        audio: new Audio("./audio/explosion.wav"),
         loaded: false,
         gravity: false,
         x: WIDTH,
@@ -193,7 +194,7 @@ function fireBall() {
                 this.loaded = true
             }
             this.spritesheet.src = "./assets/fire.png"
-            this.audio.volume = 0.2
+            this.audio.volume = 0.3
             this.audio.play()
         },
         update() {
@@ -323,7 +324,9 @@ function collision_detection(player1, fireball) {
 
 //define audio
 const background_music = new Audio('./audio/bg.mp3')
+const game_over_music = new Audio('./audio/game-over.mp3')
 background_music.loop = true;
+
 let score = 0
 let player_score_lbl = "Player 1: " + score
 let tick = 0
@@ -338,14 +341,20 @@ function reset_game() {
     score = 0;
     tick = 0;
     gameover = false;
+    for (let c = 0; c < number_of_droplets; c++) {
+        rain[c].color = 'aqua'
+    }
     can_continue = false;
     window.removeEventListener("click", reset_game)
+    game_over_music.pause()
+    game_over_music.currentTime = 0;
     player1 = new Player()
     fireBall_stack = []
     fireBall_stack.push(fireBall())
     fireBall_stack.push(fireBall())
     fireBall_stack.push(fireBall())
     ctx.clearRect(0, 0, WIDTH, HEIGHT)
+    background_music.play()
 }
 play_btn.addEventListener('click', function gameloop() {
 
@@ -393,15 +402,21 @@ play_btn.addEventListener('click', function gameloop() {
     else {
         ctx.fillStyle = 'black';
         ctx.fillRect(0, 0, WIDTH, HEIGHT);
-        ctx.fillStyle = 'green';
+        ctx.fillStyle = 'red';
         ctx.font = "30px Arial"; // Fixed from ctx.fontStyle
         ctx.textAlign = "center";
         ctx.fillText("Game Over", WIDTH / 2, HEIGHT / 2, 100);
         ctx.fillText("Continue?", WIDTH / 2, (HEIGHT / 2) + 40, 100);
         if (!can_continue) {
+            background_music.pause()
+            background_music.currentTime = 0
+            game_over_music.play()
             window.addEventListener('click', continue_func)
             can_continue = true;
-
+        }
+        for (let c = 0; c < number_of_droplets; c++) {
+            rain[c].color = 'gray'
+            rain[c].draw()
         }
 
     }
