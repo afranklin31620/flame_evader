@@ -184,8 +184,10 @@ function fireBall() {
         spritesheet: new Image(),
         audio: new Audio("./audio/fire.mp3#t=15.6,16.2"),
         loaded: false,
+        gravity: false,
         x: WIDTH,
         y: Math.random() * 500,
+        initial_y: this.y,
         load() {
             this.spritesheet.onload = () => {
                 this.loaded = true
@@ -198,8 +200,17 @@ function fireBall() {
             this.frame++
             if (this.frame == 4) {
                 this.frame = 0
+                this.gravity = !this.gravity
             }
-            this.x -= 7
+            if (this.gravity) {
+                this.y += 4
+            }
+            else {
+                this.y -= 4
+            }
+            this.x -= 5
+
+
         },
         draw() {
             if (!this.loaded) {
@@ -409,4 +420,3 @@ let continue_func = function (event) {
     }
 }
 window.addEventListener("click", continue_func)
-gameloop()
