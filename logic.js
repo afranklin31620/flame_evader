@@ -254,23 +254,23 @@ function move() {
     //diagonal dirs
 
     //down
-    if (keys['s']) {
+    if (keys['s'] && player1.y + player1.chunksize + player1.velocity < HEIGHT) {
         player1.y += player1.velocity
         player1.down()
     }
 
     //up
-    else if (keys['w']) {
+    else if (keys['w'] && player1.y - player1.velocity >= 0) {
         player1.y -= player1.velocity
         player1.up()
 
     }
 
-    else if (keys['d']) {
+    else if (keys['d'] && player1.x + player1.chunksize + player1.velocity < WIDTH) {
         player1.x += player1.velocity
         player1.right()
     }
-    else if (keys['a']) {
+    else if (keys['a'] && player1.x - player1.velocity >= 0) {
         player1.x -= player1.velocity
         player1.left()
     }
@@ -355,6 +355,7 @@ play_btn.addEventListener('click', function gameloop() {
             rain[c].draw()
         }
         move()
+
         //offscreen
         for (let c = 0; c < 3; c++) {
             if (c == 0 && !fireBall_stack[0].loaded) {
