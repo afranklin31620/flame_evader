@@ -162,7 +162,7 @@ function rainDroplet() {
         x: Math.random() * WIDTH,
         y: Math.random() * HEIGHT,
         velocity: 20,
-        color: "blue",
+        color: "aqua",
         drop() {
             this.x -= this.velocity;
             if (this.x < 0) {
